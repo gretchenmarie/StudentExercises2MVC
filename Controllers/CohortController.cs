@@ -52,7 +52,8 @@ namespace StudentExercises2MVC.Controllers
             string sql = $@"
             SELECT
                 c.Id,
-                c.Name,
+                c.Name
+            FROM Cohort c
             WHERE c.Id = {id}
             ";
 
@@ -93,11 +94,12 @@ namespace StudentExercises2MVC.Controllers
         [HttpGet]
         public async Task<ActionResult> Edit(int id)
         {
+
             string sql = $@"
             SELECT
-               c.id
-               c.name
-              From Cohort i
+                c.Id,
+                c.Name
+            FROM Cohort c
             WHERE c.Id = {id}
             ";
 
@@ -143,8 +145,8 @@ namespace StudentExercises2MVC.Controllers
         {
             string sql = $@"
             SELECT
-               c.id
-               c.Name
+                c.Id,
+                c.Name
             FROM Cohort c
             WHERE c.Id = {id}
             ";
@@ -172,7 +174,9 @@ namespace StudentExercises2MVC.Controllers
                     return RedirectToAction(nameof(Index));
                 }
                 throw new Exception("No rows affected");
+                
             }
+           
         }
     }
 }
