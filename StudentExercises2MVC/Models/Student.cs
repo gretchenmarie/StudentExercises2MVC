@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using StudentExercises2MVC.Models.StudentExercisesAPI.Data;
 
 namespace StudentExercisesAPI.Data
 {
@@ -19,7 +20,7 @@ namespace StudentExercisesAPI.Data
         public int CohortId { get; set; }
         public Cohort Cohort { get; set; }
         public string FullName { get; internal set; }
-        // public List<Exercise> AssignedExercises { get; set; } = new List<Exercise>();
+        public List<Exercise> AssignedExercises { get; set; } = new List<Exercise>();
     }
 
 }

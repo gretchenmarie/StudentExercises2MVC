@@ -107,14 +107,13 @@ namespace StudentExercises2MVC.Controllers
             SELECT
                 e.Id,
                 e.Name,
-                e.Language
-               
+                e.Language               
             FROM Exercise e
             WHERE e.Id = {id}
             ";
             using (IDbConnection conn = Connection)
             {
-                Models.StudentExercisesAPI.Data.Exercise exercise = await conn.QueryFirstAsync<Models.StudentExercisesAPI.Data.Exercise>(sql);
+                Exercise exercise = await conn.QueryFirstAsync<Exercise>(sql);
                 return View(exercise);
             }
         }
@@ -123,19 +122,17 @@ namespace StudentExercises2MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<ActionResult> Edit(int id, Models.StudentExercisesAPI.Data.Exercise exercise)
+        public async Task<ActionResult> Edit(int id, Exercise exercise)
         {
             try
             {
                 // TODO: Add update logic here
 
-                string sql = $@"INSERT INTO Exercise
-            (Name, Language)
-             VALUES
-                 (
-                  '{exercise.Name}',
-                  '{exercise.Language}'          
-                     );";
+                string sql = $@"UPDATE Exercise
+            SET Name = '{exercise.Name}',
+                Language = '{exercise.Language}'
+                WHERE id= {id}";
+             
 
                 using (IDbConnection conn = Connection)
                 {
