@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
-using StudentExercisesAPI.Data;
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,7 +16,7 @@ namespace StudentExercises2MVC.Models.ViewModels
             private readonly IConfiguration _config;
 
         
-            public Cohort cohort { get; set; }
+            public Cohort Cohort { get; set; }
 
             public CohortCreateViewModel() { }
 

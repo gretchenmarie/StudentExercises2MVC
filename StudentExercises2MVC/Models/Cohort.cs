@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace StudentExercisesAPI.Data
+namespace StudentExercises2MVC.Models
 {
     public class Cohort
     {

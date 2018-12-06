@@ -10,14 +10,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using StudentExercises2MVC.Models.ViewModels;
-using StudentExercises.Models.ViewModels;
-using StudentExercisesAPI.Data;
+
+using StudentExercises2MVC.Models.StudentExercisesAPI.Data;
+using StudentExercises2MVC.Models;
 
 namespace StudentExercises2MVC.Controllers
 {
     public class StudentsController : Controller
     {
         private readonly IConfiguration _config;
+        private readonly object id;
 
         public StudentsController(IConfiguration config)
         {
@@ -53,23 +55,44 @@ namespace StudentExercises2MVC.Controllers
 
         // GET: Students/Details/5
         public async Task<ActionResult> Details(int id)
-        {
-            string sql = $@"
-            SELECT
-                s.Id,
-                s.FirstName,
-                s.LastName,
-                s.SlackHandle,
-                s.CohortId
-            FROM Student s
-            WHERE s.Id = {id}
-            ";
-
+        {//creating a new instance of student to hold the generated student and exercises assigned to that student
+            var Student = new Student();
             using (IDbConnection conn = Connection)
             {
-                Student student = await conn.QueryFirstAsync<Student>(sql);
-                return View(student);
+                IEnumerable<Student> StudAndExerc = conn.Query<Student, Exercise, Student>(
+                 $@"
+           Select
+           s.Id,
+           s.FirstName,
+           s.LastName,
+           s.SlackHandle,
+           e.Id,
+           e.Name,
+            e.Language
+           From Student as s
+           Join StudentExercise as ex
+            on s.Id = ex.StudentId
+           Join exercise as e on e.Id = ex.ExerciseId
+           Where s.Id = {id}
+            ",
+           //multimapping with dapper
+                (generatedStudent, generatedExercise) =>
+                {
+                    if (Student.FirstName == null)
+                    {
+                        Student = generatedStudent;
+                    }
+                    Student.AssignedExercises.Add(generatedExercise);
+
+                    return generatedStudent;
+                }
+                );
+
+               // Console.WriteLine();
+                return View(Student);
+
             }
+             
         }
 
         // GET: Students/Create
@@ -120,26 +143,41 @@ namespace StudentExercises2MVC.Controllers
             using (IDbConnection conn = Connection)
             {
                 Student student = await conn.QueryFirstAsync<Student>(sql);
-                return View(student);
+                StudentEditViewModel model = new StudentEditViewModel(_config)
+                {
+                    student = student
+                };
+                return View(model);
             }
         }
 
         // POST: Students/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-       
-        public async Task<ActionResult> Edit(int id, Student student)
-        {
-            try
-            {
-                // TODO: Add update logic here
-                string sql = $@"
-                    UPDATE Student
-                    SET FirstName = '{student.FirstName}',
-                        LastName = '{student.LastName}',
-                        SlackHandle = '{student.SlackHandle}'
-                    WHERE Id = {id}";
 
+        public async Task<ActionResult> Edit(StudentEditViewModel model)
+        {
+
+            // TODO: Add update logic here
+            string sql = $@"
+                    UPDATE Student
+                    SET FirstName = '{model.student.FirstName}',
+                        LastName = '{model.student.LastName}',
+                        SlackHandle = '{model.student.SlackHandle}',
+                        CohortId = {model.student.CohortId}
+                      
+                    ";
+
+            if (model.SelectedExercises != null)
+            {
+                model.SelectedExercises.ForEach(i => sql += $@"
+                        INSERT INTO StudentExercise
+                        ( ExerciseId, StudentId, InstructorId )
+                        VALUES
+                        ({i},{model.student.Id}, 1);
+                         
+                    ");
+                Console.WriteLine(sql);
                 using (IDbConnection conn = Connection)
                 {
                     int rowsAffected = await conn.ExecuteAsync(sql);
@@ -147,15 +185,18 @@ namespace StudentExercises2MVC.Controllers
                     {
                         return RedirectToAction(nameof(Index));
                     }
-                    return BadRequest();
-
+                    throw new Exception("No rows affected");
                 }
             }
-            catch
+            else
             {
-                return View();
+                return View(model);
             }
         }
+
+
+
+
 
 
         // GET: Students/Delete/5
@@ -198,3 +239,5 @@ namespace StudentExercises2MVC.Controllers
         }
     }
 }
+
+

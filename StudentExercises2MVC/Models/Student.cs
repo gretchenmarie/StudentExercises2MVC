@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using StudentExercises2MVC.Models.StudentExercisesAPI.Data;
 
-namespace StudentExercisesAPI.Data
+namespace StudentExercises2MVC.Models
 {
     public class Student
     {
@@ -16,6 +17,10 @@ namespace StudentExercisesAPI.Data
 
         [Display(Name = "How to find me on Slack")]
         public string SlackHandle { get; set; }
+
+        [Display(Name = "Assigned  Exercises")]       
+        public string Exercises { get; set; }
+        public int ExerciseId { get; set; }
 
         public int CohortId { get; set; }
         public Cohort Cohort { get; set; }

@@ -88,8 +88,8 @@ namespace StudentExercises2MVC.Controllers
            (Name, Language)
     VALUES
     (
-        '{model.exercise.Name}',
-        '{model.exercise.Language}'       
+        '{model.Exercise.Name}',
+        '{model.Exercise.Language}'       
         
     );";
 

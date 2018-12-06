@@ -9,14 +9,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
+using StudentExercises2MVC.Models;
 using StudentExercises2MVC.Models.ViewModels;
-using StudentExercisesAPI.Data;
+
 
 namespace StudentExercises2MVC.Controllers
 {
     public class InstructorsController : Controller
     {
         private readonly IConfiguration _config;
+        private object id;
 
         public InstructorsController(IConfiguration config)
         {
@@ -129,7 +131,7 @@ namespace StudentExercises2MVC.Controllers
         //Post:instructor/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, Instructor instructor)
+        public async Task<ActionResult> Edit( Instructor instructor)
         {
             try
             {

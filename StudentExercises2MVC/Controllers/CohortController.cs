@@ -7,8 +7,9 @@ using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using StudentExercises2MVC.Models;
 using StudentExercises2MVC.Models.ViewModels;
-using StudentExercisesAPI.Data;
+
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace StudentExercises2MVC.Controllers
@@ -79,7 +80,7 @@ namespace StudentExercises2MVC.Controllers
             (Name)
             VALUES
             (              
-                 '{model.cohort.Name}'       
+                 '{model.Cohort.Name}'       
             );";
 
             using (IDbConnection conn = Connection)

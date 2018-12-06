@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
-using StudentExercisesAPI.Data;
+
 using System;
 using System.Collections.Generic;
 using System.Data;

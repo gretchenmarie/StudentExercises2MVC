@@ -9,7 +9,7 @@ namespace StudentExercises2MVC.Models
 {
 
     using System.Collections.Generic;
-    using global::StudentExercisesAPI.Data;
+  
 
     namespace StudentExercisesAPI.Data
 {
@@ -19,7 +19,12 @@ namespace StudentExercises2MVC.Models
         public string Name { get; set; }
         public string Language { get; set; }
         public List<Student> AssignedStudents { get; set; } = new List<Student>();
-    }
+
+            internal static void Insert(int v, SelectListItem selectListItem)
+            {
+                throw new NotImplementedException();
+            }
+        }
 }
     
 }

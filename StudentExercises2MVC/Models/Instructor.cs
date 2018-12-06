@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace StudentExercisesAPI.Data
+namespace StudentExercises2MVC.Models
 {
     public class Instructor
     {
