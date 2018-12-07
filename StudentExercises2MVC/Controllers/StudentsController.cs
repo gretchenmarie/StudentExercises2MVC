@@ -55,10 +55,11 @@ namespace StudentExercises2MVC.Controllers
 
         // GET: Students/Details/5
         public async Task<ActionResult> Details(int id)
-        {//creating a new instance of student to hold the generated student and exercises assigned to that student
+        {//The first time it creates the new student the first time throug hand then each time assigns 
+            //exercises to the student each time
             var Student = new Student();
             using (IDbConnection conn = Connection)
-            {
+            {//student-exercise what am I querying the database, student-the returned type
                 IEnumerable<Student> StudAndExerc = conn.Query<Student, Exercise, Student>(
                  $@"
            Select
@@ -77,7 +78,7 @@ namespace StudentExercises2MVC.Controllers
             ",
            //multimapping with dapper
                 (generatedStudent, generatedExercise) =>
-                {
+                {//tw othings I want dapper to make isntances of based on my query
                     if (Student.FirstName == null)
                     {
                         Student = generatedStudent;
@@ -193,6 +194,9 @@ namespace StudentExercises2MVC.Controllers
                 return View(model);
             }
         }
+
+
+
 
 
 
